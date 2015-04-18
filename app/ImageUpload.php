@@ -1,7 +1,7 @@
 <?php
 
 $target_dir = "/home3/orisam/public_html/kreutzlandry/angulartokenlibrary/app/img/upload/";
-$target_fileName = basename($_FILES["imageFile"]["name"]);
+$target_fileName = basename($_FILES["file"]["name"]);
 $target_filePath = $target_dir . $target_fileName;
 
 $uploadOk = 1;
@@ -10,7 +10,7 @@ $imageFileType = pathinfo($target_filePath,PATHINFO_EXTENSION);
 $json = array('Status' => '','Message' => '','ImageUrl' =>'');
 // Check if image file is a actual image or fake image
 if(isset($_POST["submit"])) {
-    $check = getimagesize($_FILES["imageFile"]["tmp_name"]);
+    $check = getimagesize($_FILES["file"]["tmp_name"]);
     if($check !== false) {
         $json["Message"] = "File is an image - " . $check["mime"] . ".";
         $uploadOk = 1;
@@ -29,7 +29,7 @@ if (file_exists($target_filePath)) {
 	  $target_filePath = $target_dir . $target_fileName;
 }
  // Check file size
-if ($_FILES["imageFile"]["size"] > 500000) {
+if ($_FILES["file"]["size"] > 500000) {
     $json["Status"] = "Fail";
     $json["Message"] = "Sorry, your file is too large.";
     $uploadOk = 0;
@@ -47,10 +47,10 @@ if ($uploadOk == 0) {
     $json["Message"] .= " Sorry, your file was not uploaded.";
 // if everything is ok, try to upload file
 } else {
-    if (move_uploaded_file($_FILES["imageFile"]["tmp_name"], $target_filePath)) {
+    if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_filePath)) {
         $json["Status"] = "Success";
-        $json["Message"] = "The file ". basename( $_FILES["imageFile"]["name"]). " has been uploaded.";
-        $json["ImageUrl"] = "http://www.kreutzlandry.com/images/tokenlibraryuploads/" . basename($_FILES["imageFile"]["name"]);
+        $json["Message"] = "The file ". basename( $_FILES["file"]["name"]). " has been uploaded.";
+        $json["ImageUrl"] = "http://www.kreutzlandry.com/images/tokenlibraryuploads/" . basename($_FILES["file"]["name"]);
     } else {
         $json["Status"] = "Fail";
         $json["Message"] = "Sorry, there was an error uploading your file.";
